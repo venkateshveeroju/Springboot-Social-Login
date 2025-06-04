@@ -13,10 +13,12 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                .authorizeHttpRequests(auth-> {
-                    auth.requestMatchers("/").permitAll();
-                    auth.anyRequest().authenticated();
+                .authorizeHttpRequests(auth -> {
+                            auth.requestMatchers("/", "/error", "/webjars/**").permitAll();
+                            auth.anyRequest().authenticated();
                         }
+                ).logout(l -> l
+                        .logoutSuccessUrl("/").permitAll()
                 )
                 .oauth2Login(Customizer.withDefaults())
                 .formLogin(Customizer.withDefaults())
